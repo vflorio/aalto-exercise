@@ -3,7 +3,6 @@ import Header from "./Header";
 import Footer from "./Footer";
 import FiltersPanel from "./FiltersPanel/FiltersPanel";
 import TodoList from "./TodoList/TodoList";
-import { FiltersContextProvider } from "../context/Filters";
 import { Wrapper } from "./Theme";
 
 export default function BaseLayout() {
@@ -13,10 +12,8 @@ export default function BaseLayout() {
       <div />
       <Wrapper>
         <Stack direction={"row"} gap={6} justifyContent={"center"}>
-          <FiltersContextProvider>
-            <FiltersPanel />
-            <TodoList />
-          </FiltersContextProvider>
+          <FiltersPanel />
+          <TodoList />
         </Stack>
       </Wrapper>
       <Footer />

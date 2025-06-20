@@ -9,14 +9,24 @@ import {
 
 type Context = {
   fullText: string;
+  completed: boolean;
+  userId: string;
   setFullText: Dispatch<SetStateAction<string>>;
+  setCompleted: Dispatch<SetStateAction<boolean>>;
+  setUserId: Dispatch<SetStateAction<string>>;
   reset: () => void;
 };
 
-export const FiltersContext = createContext<Context>({} as Context);
+const FiltersContext = createContext<Context>({} as Context);
 
-export function FiltersContextProvider({ children }: { children: ReactNode }) {
+export default function FiltersProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [fullText, setFullText] = useState("");
+  const [completed, setCompleted] = useState(false);
+  const [userId, setUserId] = useState("");
 
   const reset = () => {
     setFullText("");
@@ -26,7 +36,11 @@ export function FiltersContextProvider({ children }: { children: ReactNode }) {
     <FiltersContext.Provider
       value={{
         fullText,
+        completed,
+        userId,
         setFullText,
+        setCompleted,
+        setUserId,
         reset,
       }}
     >

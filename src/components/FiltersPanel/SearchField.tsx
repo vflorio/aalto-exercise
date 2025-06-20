@@ -44,6 +44,11 @@ export default function Search() {
           backgroundColor: "white",
           px: 1,
           flexGrow: 1,
+          "& ::placeholder": {
+            color: "secondary.main",
+            fontStyle: "italic",
+            opacity: 1,
+          },
         }}
       />
     </Stack>

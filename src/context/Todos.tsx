@@ -1,7 +1,14 @@
+import { useFiltersContext } from "./Filters";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { useSnackbar } from "notistack";
-import { useEffect, useState } from "react";
 
-const { TODOS_API_DOMAIN } = import.meta.env;
+const { VITE_TODOS_API_DOMAIN } = import.meta.env;
 
 export type Todo = {
   userId: number;
@@ -10,13 +17,18 @@ export type Todo = {
   completed: boolean;
 };
 
-export const useTodoApi = () => {
+type Context = { todos: Todo[] };
+
+const TodosContext = createContext<Context>({} as Context);
+
+export default function TodosProvider({ children }: { children: ReactNode }) {
   const { enqueueSnackbar } = useSnackbar();
   const [todos, setTodos] = useState<Todo[]>([]);
+  const {} = useFiltersContext();
 
   const get = async (signal: AbortSignal): Promise<unknown | null> => {
     try {
-      const response = await fetch(`${TODOS_API_DOMAIN}/todos`, {
+      const response = await fetch(`${VITE_TODOS_API_DOMAIN}/todos`, {
         signal,
       });
 
@@ -65,7 +77,17 @@ export const useTodoApi = () => {
     return () => {
       controller.abort();
     };
-  });
+  }, []);
 
-  return { todos };
+  return (
+    <TodosContext.Provider value={{ todos }}>{children}</TodosContext.Provider>
+  );
+}
+
+export const useTodosContext = () => {
+  const context = useContext(TodosContext);
+  if (!context) {
+    throw new Error("useTodosContext must be used within a TodosProvider");
+  }
+  return context;
 };

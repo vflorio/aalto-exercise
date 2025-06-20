@@ -2,13 +2,19 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "../theme";
 import { SnackbarProvider } from "notistack";
 import BaseLayout from "./BaseLayout";
+import TodosProvider from "../context/Todos";
+import FiltersProvider from "../context/Filters";
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <SnackbarProvider>
-        <CssBaseline />
-        <BaseLayout />
+        <FiltersProvider>
+          <TodosProvider>
+            <CssBaseline />
+            <BaseLayout />
+          </TodosProvider>
+        </FiltersProvider>
       </SnackbarProvider>
     </ThemeProvider>
   );
