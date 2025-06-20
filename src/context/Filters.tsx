@@ -8,10 +8,10 @@ import {
 } from "react";
 
 type Context = {
-  fullText: string;
+  title: string;
   completed: boolean;
   userId: string;
-  setFullText: Dispatch<SetStateAction<string>>;
+  setTitle: Dispatch<SetStateAction<string>>;
   setCompleted: Dispatch<SetStateAction<boolean>>;
   setUserId: Dispatch<SetStateAction<string>>;
   reset: () => void;
@@ -19,26 +19,24 @@ type Context = {
 
 const FiltersContext = createContext<Context>({} as Context);
 
-export default function FiltersProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const [fullText, setFullText] = useState("");
+export default function FiltersProvider({ children }: { children: ReactNode }) {
+  const [title, setTitle] = useState("");
   const [completed, setCompleted] = useState(false);
   const [userId, setUserId] = useState("");
 
   const reset = () => {
-    setFullText("");
+    setTitle("");
+    setCompleted(false);
+    setUserId("");
   };
 
   return (
     <FiltersContext.Provider
       value={{
-        fullText,
+        title,
         completed,
         userId,
-        setFullText,
+        setTitle,
         setCompleted,
         setUserId,
         reset,
@@ -49,12 +47,10 @@ export default function FiltersProvider({
   );
 }
 
-export const useFiltersContext = () => {
+export const useFilters = () => {
   const context = useContext(FiltersContext);
   if (!context) {
-    throw new Error(
-      "useFiltersContext must be used within a FiltersContextProvider"
-    );
+    throw new Error("useFilters must be used within a FiltersProvider");
   }
   return context;
 };

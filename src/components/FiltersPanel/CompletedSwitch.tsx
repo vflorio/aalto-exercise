@@ -1,9 +1,9 @@
 import { Stack, Switch } from "@mui/material";
 import { Label } from "../Theme";
-import { useFiltersContext } from "../../context/Filters";
+import { useFilters } from "../../context/Filters";
 
 export default function CompletedSwitch() {
-  const { completed, setCompleted } = useFiltersContext();
+  const { completed, setCompleted } = useFilters();
   return (
     <Stack>
       <Label>Completed</Label>

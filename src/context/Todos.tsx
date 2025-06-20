@@ -1,4 +1,4 @@
-import { useFiltersContext } from "./Filters";
+import { useFilters } from "./Filters";
 import {
   createContext,
   useContext,
@@ -7,87 +7,68 @@ import {
   type ReactNode,
 } from "react";
 import { useSnackbar } from "notistack";
+import { getTodos, type Todo } from "../services/todoApi";
 
-const { VITE_TODOS_API_DOMAIN } = import.meta.env;
-
-export type Todo = {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
+type Context = {
+  todos: Todo[];
+  uniqueUserIds: string[];
+  isLoading: boolean;
 };
-
-type Context = { todos: Todo[] };
 
 const TodosContext = createContext<Context>({} as Context);
 
 export default function TodosProvider({ children }: { children: ReactNode }) {
   const { enqueueSnackbar } = useSnackbar();
+  const { title, completed, userId } = useFilters();
+
   const [todos, setTodos] = useState<Todo[]>([]);
-  const {} = useFiltersContext();
-
-  const get = async (signal: AbortSignal): Promise<unknown | null> => {
-    try {
-      const response = await fetch(`${VITE_TODOS_API_DOMAIN}/todos`, {
-        signal,
-      });
-
-      return response.json();
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
-        return null;
-      }
-
-      console.error(error);
-
-      enqueueSnackbar("Errror fetching todos. Please try again later.", {
-        variant: "error",
-      });
-      return null;
-    }
-  };
-
-  const validate = (data: unknown): data is Todo[] => {
-    if (!Array.isArray(data)) return false;
-    return data.every(
-      (item) =>
-        typeof item?.userId === "number" &&
-        typeof item?.id === "number" &&
-        typeof item?.title === "string" &&
-        typeof item?.completed === "boolean"
-    );
-  };
+  const [isLoading, setIsLoading] = useState(true);
+  const [uniqueUserIds, setUniqueUserIds] = useState<string[]>([]);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    get(controller.signal).then((data) => {
-      if (!data) return;
+    setIsLoading(true);
+    getTodos(controller.signal, {
+      title,
+      completed,
+      userId,
+    })
+      .then((data) => {
+        if (!data) return;
+        if (data instanceof Error) {
+          enqueueSnackbar(data.message, {
+            variant: "error",
+          });
+          return;
+        }
+        if (!userId)
+          setUniqueUserIds(
+            Array.from(new Set(data.map((todo) => todo.userId.toString())))
+          );
 
-      if (!validate(data)) {
-        enqueueSnackbar("Invalid data received from API.", {
-          variant: "error",
-        });
-        return;
-      }
-
-      setTodos(data);
-    });
+        setTodos(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
 
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [userId, completed, title]);
 
   return (
-    <TodosContext.Provider value={{ todos }}>{children}</TodosContext.Provider>
+    <TodosContext.Provider value={{ todos, uniqueUserIds, isLoading }}>
+      {children}
+    </TodosContext.Provider>
   );
 }
 
-export const useTodosContext = () => {
+export const useTodos = () => {
   const context = useContext(TodosContext);
   if (!context) {
-    throw new Error("useTodosContext must be used within a TodosProvider");
+    throw new Error("useTodos must be used within a TodosProvider");
   }
   return context;
 };

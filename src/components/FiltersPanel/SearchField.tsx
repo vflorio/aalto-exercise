@@ -1,22 +1,26 @@
 import { Input, Stack } from "@mui/material";
-import { useFiltersContext } from "../../context/Filters";
+import { useFilters } from "../../context/Filters";
 import { useEffect, useState } from "react";
 import { SearchRounded } from "@mui/icons-material";
 
 export default function Search() {
-  const { setFullText } = useFiltersContext();
+  const { setTitle, title } = useFilters();
 
   const [value, setValue] = useState("");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setFullText(value);
-    }, 1000);
+      setTitle(value);
+    }, 500);
 
     return () => {
       clearTimeout(timeout);
     };
   }, [value]);
+
+  useEffect(() => {
+    if (!title) setValue("");
+  }, [title]);
 
   return (
     <Stack

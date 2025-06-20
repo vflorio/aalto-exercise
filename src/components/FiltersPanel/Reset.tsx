@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
-import { useFiltersContext } from "../../context/Filters";
+import { useFilters } from "../../context/Filters";
 
 export default function Reset() {
-  const { reset } = useFiltersContext();
+  const { reset } = useFilters();
   return <Button onClick={reset}>Reset Filters</Button>;
 }

@@ -1,17 +1,11 @@
 import { FormControl, MenuItem, Select, Stack } from "@mui/material";
-import { useFiltersContext } from "../../context/Filters";
+import { useFilters } from "../../context/Filters";
 import { Label } from "../Theme";
-import { useTodosContext } from "../../context/Todos";
-import { useMemo } from "react";
+import { useTodos } from "../../context/Todos";
 
 export default function UserIdSelect() {
-  const { setUserId, userId } = useFiltersContext();
-  const { todos } = useTodosContext();
-
-  const uniqueUserIds = useMemo(
-    () => Array.from(new Set(todos.map((todo) => todo.userId))),
-    [todos]
-  );
+  const { setUserId, userId } = useFilters();
+  const { uniqueUserIds } = useTodos();
 
   return (
     <Stack gap={1}>
