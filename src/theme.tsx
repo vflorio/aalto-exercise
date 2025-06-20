@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import { darkBlue, lightBlue, paperWhite, purple } from "./constants";
 
 export const theme = createTheme({
   typography: {
@@ -16,9 +17,18 @@ export const theme = createTheme({
       '"Segoe UI Symbol"',
     ].join(","),
   },
+  spacing: 10,
   palette: {
-    mode: "dark",
-    primary: {},
-    background: {},
+    mode: "light",
+    primary: {
+      main: darkBlue,
+      light: lightBlue,
+    },
+    secondary: {
+      main: purple,
+    },
+    background: {
+      paper: paperWhite,
+    },
   },
 });
