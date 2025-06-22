@@ -4,6 +4,7 @@ import { Wrapper } from "./Theme";
 export default function Header() {
   return (
     <Stack
+      width={"100%"}
       height={94}
       alignItems={"center"}
       justifyContent={"center"}

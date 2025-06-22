@@ -16,7 +16,7 @@ import TodoTableFooter from "./TodoTableFooter";
 export const rowsPerPage = 5;
 
 export default function TodoTable() {
-  const { todos, isLoading } = useTodos();
+  const { todos, isQuerying: isLoading } = useTodos();
   const [pageNumber, setPageNumber] = useState(0);
 
   useEffect(() => {
@@ -65,7 +65,13 @@ export default function TodoTable() {
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody
+          sx={{
+            // Non conosco un modo migliore per fare gap tra head e body :C
+            position: "relative",
+            top: 20,
+          }}
+        >
           {isLoading ? (
             <TableRow>
               <TableCell colSpan={6} align="center">

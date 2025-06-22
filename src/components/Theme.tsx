@@ -1,9 +1,10 @@
-import { styled, Typography, Stack, Box } from "@mui/material";
+import { styled, Typography, Stack } from "@mui/material";
 import { maxWidth } from "../constants";
 
-export const Wrapper = styled(Box)(({ theme }) => ({
-  px: 2,
-  maxWidth: `calc(${maxWidth}px - ${theme.spacing(2)}px)`,
+export const Wrapper = styled(Stack)(({ theme }) => ({
+  margin: theme.spacing(2),
+  width: "100%",
+  maxWidth: `${maxWidth}px`,
 }));
 
 export const Panel = styled(Stack)(({ theme }) => ({

@@ -5,6 +5,8 @@ export default function Footer() {
   return (
     <Stack
       sx={{
+        mt: 2,
+        width: "100%",
         backgroundColor: "primary.main",
         color: "white",
         height: 186,

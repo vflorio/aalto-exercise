@@ -34,7 +34,7 @@ export default function TodoTableFooter({
           )}
           sx={{
             "& .MuiToolbar-root": {
-              pt: 2.5,
+              pt: 5,
               pl: 0,
               justifyContent: "center",
             },
