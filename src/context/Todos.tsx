@@ -19,7 +19,7 @@ const TodosContext = createContext<Context>({} as Context);
 
 export default function TodosProvider({ children }: { children: ReactNode }) {
   const { enqueueSnackbar } = useSnackbar();
-  const { title, completed, userId } = useFilters();
+  const { title, completed, userIds } = useFilters();
 
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +32,7 @@ export default function TodosProvider({ children }: { children: ReactNode }) {
     getTodos(controller.signal, {
       title,
       completed,
-      userId,
+      userIds,
     })
       .then((data) => {
         if (!data) return;
@@ -42,9 +42,9 @@ export default function TodosProvider({ children }: { children: ReactNode }) {
           });
           return;
         }
-        if (!userId)
+        if (!userIds.length)
           setUniqueUserIds(
-            Array.from(new Set(data.map((todo) => todo.userId.toString())))
+            Array.from(new Set(data.map((todo) => `${todo.userId}`)))
           );
 
         setTodos(data);
@@ -56,7 +56,7 @@ export default function TodosProvider({ children }: { children: ReactNode }) {
     return () => {
       controller.abort();
     };
-  }, [userId, completed, title]);
+  }, [userIds, completed, title]);
 
   return (
     <TodosContext.Provider value={{ todos, uniqueUserIds, isLoading }}>

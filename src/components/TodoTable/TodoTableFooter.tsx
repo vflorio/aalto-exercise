@@ -64,8 +64,8 @@ const createTodoPagination =
       <Pagination
         color="primary"
         count={count}
-        page={page}
-        onChange={(_event, value) => onPageChange(null, value)}
+        page={page + 1}
+        onChange={(_event, value) => onPageChange(null, value - 1)}
         renderItem={(item) => (
           <PaginationItem
             slots={{

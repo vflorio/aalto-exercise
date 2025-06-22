@@ -10,7 +10,7 @@ export type Todo = {
 export type TodoFilters = {
   title: string;
   completed: boolean;
-  userId: string;
+  userIds: string[];
 };
 
 const validate = (data: unknown): data is Todo[] => {
@@ -27,10 +27,14 @@ const validate = (data: unknown): data is Todo[] => {
 const getParamsQueryString = (filters: TodoFilters): string => {
   const params = new URLSearchParams();
 
-  if (!filters.userId && !filters.title && !filters.completed) return "";
+  if (!filters.userIds.length && !filters.title && !filters.completed)
+    return "";
 
-  if (filters.userId) params.append("userId", filters.userId);
+  if (filters.userIds.length)
+    filters.userIds.forEach((userId) => params.append("userId", userId));
+
   if (filters.title) params.append("title", filters.title);
+  
   if (filters.completed)
     params.append("completed", JSON.stringify(filters.completed));
 

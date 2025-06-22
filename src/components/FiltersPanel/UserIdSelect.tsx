@@ -5,7 +5,7 @@ import { useTodos } from "../../context/Todos";
 import { ExpandCircleDownOutlined } from "@mui/icons-material";
 
 export default function UserIdSelect() {
-  const { setUserId, userId } = useFilters();
+  const { setUserIds, userIds } = useFilters();
   const { uniqueUserIds } = useTodos();
 
   return (
@@ -20,8 +20,11 @@ export default function UserIdSelect() {
         }}
       >
         <Select
-          value={userId}
-          onChange={(event) => setUserId(event.target.value)}
+          multiple
+          value={userIds}
+          onChange={({ target: { value } }) =>
+            setUserIds(typeof value === "string" ? value.split(",") : value)
+          }
           IconComponent={(props) => <ExpandCircleDownOutlined {...props} />}
           input={
             <Input

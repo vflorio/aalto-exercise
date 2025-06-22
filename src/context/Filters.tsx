@@ -10,10 +10,10 @@ import {
 type Context = {
   title: string;
   completed: boolean;
-  userId: string;
+  userIds: string[];
   setTitle: Dispatch<SetStateAction<string>>;
   setCompleted: Dispatch<SetStateAction<boolean>>;
-  setUserId: Dispatch<SetStateAction<string>>;
+  setUserIds: Dispatch<SetStateAction<string[]>>;
   reset: () => void;
 };
 
@@ -22,12 +22,12 @@ const FiltersContext = createContext<Context>({} as Context);
 export default function FiltersProvider({ children }: { children: ReactNode }) {
   const [title, setTitle] = useState("");
   const [completed, setCompleted] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [userIds, setUserIds] = useState<string[]>([]);
 
   const reset = () => {
     setTitle("");
     setCompleted(false);
-    setUserId("");
+    setUserIds([]);
   };
 
   return (
@@ -35,10 +35,10 @@ export default function FiltersProvider({ children }: { children: ReactNode }) {
       value={{
         title,
         completed,
-        userId,
+        userIds,
         setTitle,
         setCompleted,
-        setUserId,
+        setUserIds,
         reset,
       }}
     >
