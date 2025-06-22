@@ -1,11 +1,13 @@
 import {
   Pagination,
+  PaginationItem,
   TableFooter,
   TablePagination,
   TableRow,
 } from "@mui/material";
 import type { Todo } from "../../services/todoApi";
 import { rowsPerPage } from "./TodoTable";
+import { ExpandCircleDownOutlined } from "@mui/icons-material";
 
 export default function TodoTableFooter({
   todos,
@@ -20,6 +22,7 @@ export default function TodoTableFooter({
     <TableFooter>
       <TableRow>
         <TablePagination
+          key={`footer-${todos.length}`}
           rowsPerPageOptions={[]}
           rowsPerPage={rowsPerPage}
           colSpan={3}
@@ -59,8 +62,36 @@ const createTodoPagination =
   }) =>
     (
       <Pagination
+        color="primary"
         count={count}
         page={page}
         onChange={(_event, value) => onPageChange(null, value)}
+        renderItem={(item) => (
+          <PaginationItem
+            slots={{
+              previous: () => (
+                <ExpandCircleDownOutlined
+                  color="primary"
+                  sx={{ transform: "rotate(90deg)" }}
+                />
+              ),
+              next: () => (
+                <ExpandCircleDownOutlined
+                  color="primary"
+                  sx={{ transform: "rotate(-90deg)" }}
+                />
+              ),
+            }}
+            {...item}
+          />
+        )}
+        sx={{
+          "& .MuiPaginationItem-root": {
+            color: "primary.main",
+          },
+          "& .Mui-selected": {
+            color: "white",
+          },
+        }}
       />
     );

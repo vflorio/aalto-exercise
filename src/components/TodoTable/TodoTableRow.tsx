@@ -6,16 +6,11 @@ export default function TodoTableRow({ todo }: { todo: Todo }) {
   return (
     <TableRow key={todo.id}>
       <TableCell>
-        <TableCellInner>{todo.userId}</TableCellInner>
+        <TableCellInner px={4}>{todo.userId}</TableCellInner>
       </TableCell>
       <TableCell>
-        <TableCellInner
-          sx={{
-            pl: 2,
-            alignItems: "flex-start",
-          }}
-        >
-          {todo.title}
+        <TableCellInner px={1}>
+          <Title>{todo.title}</Title>
         </TableCellInner>
       </TableCell>
       <TableCell
@@ -26,7 +21,7 @@ export default function TodoTableRow({ todo }: { todo: Todo }) {
           },
         }}
       >
-        <TableCellInner>
+        <TableCellInner alignItems={"center"}>
           {todo.completed ? <Check /> : <Close />}
         </TableCellInner>
       </TableCell>
@@ -35,11 +30,18 @@ export default function TodoTableRow({ todo }: { todo: Todo }) {
 }
 
 const TableCellInner = styled(Stack)(({ theme }) => ({
+  height: 70,
+  justifyContent: "center",
+  fontSize: 16,
   backgroundColor: "white",
   borderBottom: "2px solid",
   borderColor: theme.palette.primary.light,
-  height: 70,
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: 16,
 }));
+
+const Title = styled("span")({
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+});

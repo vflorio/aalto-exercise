@@ -36,10 +36,9 @@ export default function Search() {
         backgroundColor={"secondary.main"}
         color={"white"}
       >
-        <SearchRounded fontSize="medium" />
+        <SearchRounded fontSize="large" />
       </Stack>
       <Input
-        id="search-filter"
         value={value}
         onChange={(event) => setValue(event.target.value)}
         placeholder="Search..."

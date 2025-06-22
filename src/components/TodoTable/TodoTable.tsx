@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CircularProgress,
   Table,
@@ -17,45 +17,55 @@ export const rowsPerPage = 5;
 
 export default function TodoTable() {
   const { todos, isLoading } = useTodos();
-  const [page, setPage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
 
   useEffect(() => {
-    setPage(0);
+    setPageNumber(0);
   }, [todos]);
 
+  const page = useMemo(
+    () =>
+      todos.slice(
+        pageNumber * rowsPerPage,
+        pageNumber * rowsPerPage + rowsPerPage
+      ),
+    [todos, pageNumber]
+  );
+
   const emptyRows =
-    page > 0 ? Math.max(0, (page + 1) * rowsPerPage - todos.length) : 0;
-  console.log({ count: todos.length });
+    pageNumber > 0
+      ? Math.max(0, (pageNumber + 1) * rowsPerPage - todos.length)
+      : 0;
+
   return (
     <Panel sx={{ width: 830, height: 630 }}>
       <Table
         sx={{
           "& td": {
             border: "none",
+            py: 1,
+            px: 0,
+          },
+          "& th": {
+            py: 0,
+            px: 1,
           },
         }}
       >
         <TableHead>
           <TableRow>
-            <TableCell align="center" width={96}>
-              <Label> User ID</Label>
+            <TableCell sx={{ width: 164 }}>
+              <Label>User ID</Label>
             </TableCell>
             <TableCell>
-              <Label> Title</Label>
+              <Label>Title</Label>
             </TableCell>
-            <TableCell align="center" width={124}>
-              <Label> Completed</Label>
+            <TableCell sx={{ width: 124 }}>
+              <Label>Completed</Label>
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody
-          sx={{
-            "& td": {
-              py: 1,
-              px: 0,
-            },
-          }}
-        >
+        <TableBody>
           {isLoading ? (
             <TableRow>
               <TableCell colSpan={6} align="center">
@@ -71,13 +81,7 @@ export default function TodoTable() {
               </TableCell>
             </TableRow>
           ) : (
-            (rowsPerPage > 0
-              ? todos.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : todos
-            ).map((todo) => <TodoTableRow key={todo.id} todo={todo} />)
+            page.map((todo) => <TodoTableRow key={todo.id} todo={todo} />)
           )}
           {emptyRows > 0 && (
             <TableRow style={{ height: 70 * emptyRows }}>
@@ -86,7 +90,11 @@ export default function TodoTable() {
           )}
         </TableBody>
         {todos.length ? (
-          <TodoTableFooter todos={todos} page={page} setPage={setPage} />
+          <TodoTableFooter
+            todos={todos}
+            page={pageNumber}
+            setPage={setPageNumber}
+          />
         ) : null}
       </Table>
     </Panel>

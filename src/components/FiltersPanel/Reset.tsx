@@ -1,7 +1,21 @@
-import { Button } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useFilters } from "../../context/Filters";
 
 export default function Reset() {
   const { reset } = useFilters();
-  return <Button onClick={reset}>Reset Filters</Button>;
+  return (
+    <Typography
+      sx={{
+        fontSize: 20,
+        textAlign: "center",
+        color: "primary.main",
+        cursor: "pointer",
+        textUnderlineOffset: 4,
+        textDecoration: "underline",
+      }}
+      onClick={reset}
+    >
+      Reset Filters
+    </Typography>
+  );
 }
