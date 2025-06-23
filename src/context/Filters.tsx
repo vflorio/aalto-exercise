@@ -6,15 +6,15 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
+import type { TodoFilters } from "../services/todoApi";
 
-type Context = {
-  title: string;
-  completed: boolean;
-  userIds: string[];
-  setTitle: Dispatch<SetStateAction<string>>;
-  setCompleted: Dispatch<SetStateAction<boolean>>;
-  setUserIds: Dispatch<SetStateAction<string[]>>;
+type Context = TodoFilters & {
+  setTitle: Dispatch<SetStateAction<TodoFilters["title"]>>;
+  setCompleted: Dispatch<SetStateAction<TodoFilters["completed"]>>;
+  setUserIds: Dispatch<SetStateAction<TodoFilters["userIds"]>>;
   reset: () => void;
+  panelOpen: boolean;
+  togglePanel: () => void;
 };
 
 const FiltersContext = createContext<Context>({} as Context);
@@ -23,6 +23,8 @@ export default function FiltersProvider({ children }: { children: ReactNode }) {
   const [title, setTitle] = useState("");
   const [completed, setCompleted] = useState(false);
   const [userIds, setUserIds] = useState<string[]>([]);
+
+  const [panelOpen, setPanelOpen] = useState(false);
 
   const reset = () => {
     setTitle("");
@@ -34,12 +36,14 @@ export default function FiltersProvider({ children }: { children: ReactNode }) {
     <FiltersContext.Provider
       value={{
         title,
-        completed,
-        userIds,
         setTitle,
+        completed,
         setCompleted,
+        userIds,
         setUserIds,
         reset,
+        panelOpen,
+        togglePanel: () => setPanelOpen((current) => !current),
       }}
     >
       {children}
