@@ -32,7 +32,7 @@ export default function BaseLayout() {
             color="primary"
             onClick={() => togglePanel()}
             variant={panelOpen ? "contained" : "outlined"}
-            sx={{ display: isMobile ? "flex" : "none" }}
+            sx={{ visibility: isMobile ? "visible" : "hidden" }}
           >
             <FilterList />
           </Button>
