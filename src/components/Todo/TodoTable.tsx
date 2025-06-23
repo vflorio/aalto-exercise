@@ -12,6 +12,7 @@ import { useTodos } from "../../context/Todos";
 import { Label, Panel } from "../Theme";
 import TodoTableRow from "./TodoTableRow";
 import TodoTableFooter from "./TodoTableFooter";
+import { mobileMediaQuery, tableBasis } from "../../theme";
 
 export const rowsPerPage = 5;
 
@@ -38,7 +39,16 @@ export default function TodoTable() {
       : 0;
 
   return (
-    <Panel sx={{ width: 830, height: 630 }}>
+    <Panel
+      sx={{
+        flexBasis: tableBasis,
+        height: 630,
+        [`@media ${mobileMediaQuery}`]: {
+          flexBasis: "100%",
+          height: "100%",
+        },
+      }}
+    >
       <Table
         sx={{
           "& td": {
@@ -49,19 +59,63 @@ export default function TodoTable() {
           "& th": {
             py: 0,
             px: 1,
+            position: "relative",
           },
         }}
       >
         <TableHead>
           <TableRow>
-            <TableCell sx={{ width: 164 }}>
-              <Label>User ID</Label>
+            <TableCell
+              sx={{
+                width: 164,
+                [`@media ${mobileMediaQuery}`]: {
+                  width: 32,
+                },
+              }}
+            >
+              <Label
+                sx={{
+                  [`@media ${mobileMediaQuery}`]: {
+                    width: 60,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                  },
+                }}
+              >
+                User ID
+              </Label>
             </TableCell>
             <TableCell>
-              <Label>Title</Label>
+              <Label
+                sx={{
+                  [`@media ${mobileMediaQuery}`]: {
+                    textAlign: "center",
+                  },
+                }}
+              >
+                Title
+              </Label>
             </TableCell>
-            <TableCell sx={{ width: 124 }}>
-              <Label>Completed</Label>
+            <TableCell
+              sx={{
+                width: 124,
+                [`@media ${mobileMediaQuery}`]: {
+                  width: 48,
+                },
+              }}
+            >
+              <Label
+                sx={{
+                  [`@media ${mobileMediaQuery}`]: {
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                  },
+                }}
+              >
+                Completed
+              </Label>
             </TableCell>
           </TableRow>
         </TableHead>

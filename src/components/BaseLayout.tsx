@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, useMediaQuery } from "@mui/material";
 import Header from "./Header";
 import Footer from "./Footer";
 import FiltersPanel from "./FiltersPanel/FiltersPanel";
@@ -6,8 +6,11 @@ import TodoTable from "./Todo/TodoTable";
 import { Wrapper } from "./Theme";
 import TodoAddOrUpdate from "./Todo/TodoAddOrUpdate";
 import { Add } from "@mui/icons-material";
+import { mobileMediaQuery } from "../theme";
 
 export default function BaseLayout() {
+  const column = useMediaQuery(mobileMediaQuery);
+
   return (
     <Stack height={"100%"} alignItems={"center"}>
       <Header />
@@ -26,9 +29,10 @@ export default function BaseLayout() {
           )}
         />
         <Stack
-          direction={"row"}
+          direction={column ? "column" : "row"}
           justifyContent={"space-between"}
           width={"100%"}
+          gap={2}
         >
           <FiltersPanel />
           <TodoTable />

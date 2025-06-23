@@ -33,6 +33,7 @@ export default function Search() {
         justifyContent="center"
         width={50}
         height={50}
+        minWidth={50}
         backgroundColor={"secondary.main"}
         color={"white"}
       >
@@ -44,11 +45,11 @@ export default function Search() {
         placeholder="Search..."
         disableUnderline
         sx={{
+          color: "secondary.main",
           backgroundColor: "white",
           px: 1,
           flexGrow: 1,
           "& ::placeholder": {
-            color: "secondary.main",
             fontStyle: "italic",
             opacity: 1,
           },

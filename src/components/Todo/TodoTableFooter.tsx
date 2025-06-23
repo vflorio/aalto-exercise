@@ -4,10 +4,12 @@ import {
   TableFooter,
   TablePagination,
   TableRow,
+  useMediaQuery,
 } from "@mui/material";
 import type { Todo } from "../../services/todoApi";
 import { rowsPerPage } from "./TodoTable";
 import { ExpandCircleDownOutlined } from "@mui/icons-material";
+import { mobileMediaQuery } from "../../theme";
 
 export default function TodoTableFooter({
   todos,
@@ -30,7 +32,7 @@ export default function TodoTableFooter({
           page={page}
           onPageChange={(_, newPage) => setPage(newPage)}
           ActionsComponent={createTodoPagination(
-            todos.length / rowsPerPage - 1
+            Math.floor(todos.length / rowsPerPage - 1)
           )}
           sx={{
             "& .MuiToolbar-root": {
@@ -59,9 +61,13 @@ const createTodoPagination =
   }: {
     page: number;
     onPageChange: (event: null, newPage: number) => void;
-  }) =>
-    (
+  }) => {
+    const isMobile = useMediaQuery(mobileMediaQuery);
+    const isVerySmall = useMediaQuery("(max-width: 330px)");
+    return (
       <Pagination
+        size={isMobile ? "small" : "medium"}
+        siblingCount={isVerySmall ? 0 : undefined}
         color="primary"
         count={count}
         page={page + 1}
@@ -95,3 +101,4 @@ const createTodoPagination =
         }}
       />
     );
+  };

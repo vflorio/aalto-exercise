@@ -1,10 +1,10 @@
 import { styled, Typography, Stack } from "@mui/material";
-import { maxWidth } from "../constants";
+import { maxWidth, mobileMediaQuery } from "../theme";
 
 export const Wrapper = styled(Stack)(({ theme }) => ({
-  margin: theme.spacing(2),
+  padding: theme.spacing(2),
   width: "100%",
-  maxWidth: `${maxWidth}px`,
+  maxWidth: `calc(${maxWidth}px + ${theme.spacing(4)})`,
 }));
 
 export const Panel = styled(Stack)(({ theme }) => ({
@@ -17,4 +17,7 @@ export const Label = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
   color: theme.palette.primary.main,
   textTransform: "uppercase",
+  [`@media ${mobileMediaQuery}`]: {
+    fontSize: 18,
+  },
 }));

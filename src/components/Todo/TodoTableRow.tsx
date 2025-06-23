@@ -2,6 +2,7 @@ import { Stack, styled, TableCell, TableRow } from "@mui/material";
 import type { Todo } from "../../services/todoApi";
 import { Check, Close } from "@mui/icons-material";
 import TodoAddOrUpdate from "./TodoAddOrUpdate";
+import { mobileMediaQuery } from "../../theme";
 
 export default function TodoTableRow({ todo }: { todo: Todo }) {
   return (
@@ -10,7 +11,17 @@ export default function TodoTableRow({ todo }: { todo: Todo }) {
       renderButton={(openDialog) => (
         <TableRow onClick={openDialog} sx={{ cursor: "pointer" }}>
           <TableCell>
-            <TableCellInner px={4}>{todo.userId}</TableCellInner>
+            <TableCellInner
+              sx={{
+                px: 4,
+                [`@media ${mobileMediaQuery}`]: {
+                  px: 2,
+                  alignItems: "center",
+                },
+              }}
+            >
+              {todo.userId}
+            </TableCellInner>
           </TableCell>
           <TableCell>
             <TableCellInner px={1}>
